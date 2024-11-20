@@ -1,0 +1,56 @@
+# Diretórios e arquivos gerados pelo Maven
+/target/
+!.mvn/
+*.iml
+*.lst
+maven-status/
+
+# Configurações específicas do editor/IDE
+.vscode/
+*.idea/
+*.classpath
+*.project
+*.settings/
+
+# Arquivos compilados Java
+*.class
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Arquivos gerados por testes
+/test-classes/
+/test-output/
+*.log
+*.tmp
+
+# Outros arquivos temporários
+*.bak
+*.swp
+*.swo
+*.orig
+*.rej
+
+# Arquivos de pacotes
+*.jar
+*.war
+*.ear
+*.zip
+
+# Logs e relatórios
+*.log
+logs/
+*.out
+*.log.*
+
+# Arquivos de configuração do ambiente local
+.env
+*.local
+*.env.*
+.envrc
+
+# Outras pastas do build (caso existam)
+dist/
+build/
