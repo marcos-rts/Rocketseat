@@ -1,6 +1,6 @@
 package com.rocketseat.createurlshortner;
 
-import java.util.Map;
+import java.util.*;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -22,13 +22,20 @@ public class Main implements RequestHandler<Map<String, Object>, Map<String, Str
             // Vai transformar o Body em um Mapp
             bodyMap = objectMapper.readValue(body, Map.class);
 
-        } catch (Exception exception) {
+        } catch (Exception exception) { 
             throw new RuntimeException("Error parsing Json body: " + exception.getMessage(), exception);
         }
 
         String originalUrl = bodyMap.get("origunalUrl");
         String expirationTime = bodyMap.get("expirationMap");
 
-        return null;
+        // Gera UUID cortaado em 8
+        String shortUrlCode = UUID.randomUUID().toString().substring(0, 8);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("code", shortUrlCode);
+        
+
+        return response;
     }
 }
