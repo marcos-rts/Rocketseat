@@ -1,41 +1,64 @@
-package com.rocketseat.createurlshortner;
+package com.rocketseat.createurlshortner; 
+// Define o pacote onde a classe está localizada. Isso ajuda a organizar o código em módulos.
 
-import java.util.*;
+import java.util.*; 
+// Importa todas as classes do pacote java.util, incluindo Map, HashMap e UUID.
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.amazonaws.services.lambda.runtime.Context; 
+// Importa a interface Context para interagir com o ambiente de execução da AWS Lambda.
 
-public class Main implements RequestHandler<Map<String, Object>, Map<String, String>> {
+import com.amazonaws.services.lambda.runtime.RequestHandler; 
+// Importa a interface RequestHandler, que deve ser implementada para definir o comportamento de uma função Lambda.
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+import com.fasterxml.jackson.core.JsonProcessingException; 
+// Importa a exceção que pode ser lançada durante o processamento de JSON.
 
-    @Override
-    public Map<String, String> handleRequest(Map<String, Object> input, Context context) {
-        // Recebe o Objeto
+import com.fasterxml.jackson.databind.ObjectMapper; 
+// Importa o ObjectMapper, usado para converter objetos Java em JSON e vice-versa.
+
+public class Main implements RequestHandler<Map<String, Object>, Map<String, String>> { 
+    // Define a classe principal que implementa a interface RequestHandler.
+    // O tipo genérico `Map<String, Object>` representa o tipo da entrada da Lambda.
+    // O tipo genérico `Map<String, String>` representa o tipo da saída da Lambda.
+
+    private final ObjectMapper objectMapper = new ObjectMapper(); 
+    // Cria uma instância do ObjectMapper para lidar com a conversão entre JSON e objetos Java.
+
+    @Override 
+    public Map<String, String> handleRequest(Map<String, Object> input, Context context) { 
+        // Sobrescreve o método `handleRequest`, onde a lógica da função Lambda é implementada.
+        // `input` contém os dados passados para a função Lambda.
+        // `context` fornece informações sobre o ambiente de execução.
+
+        // Recebe o corpo da requisição (supõe-se que esteja no formato JSON).
         String body = input.get("body").toString();
 
-        // Variavel do tipo Chave String e Valor String
+        // Declara um mapa para armazenar os dados extraídos do corpo JSON.
         Map<String, String> bodyMap;
         try {
-            // Vai transformar o Body em um Mapp
+            // Converte o JSON recebido em um Map<String, String>.
             bodyMap = objectMapper.readValue(body, Map.class);
-
         } catch (Exception exception) { 
+            // Caso ocorra um erro na conversão, lança uma exceção com detalhes do erro.
             throw new RuntimeException("Error parsing Json body: " + exception.getMessage(), exception);
         }
 
-        String originalUrl = bodyMap.get("origunalUrl");
-        String expirationTime = bodyMap.get("expirationMap");
+        // Extrai valores específicos do mapa gerado a partir do JSON.
+        String originalUrl = bodyMap.get("origunalUrl"); 
+        // Obtém o valor associado à chave "origunalUrl" (nota: há um erro de digitação aqui).
+        String expirationTime = bodyMap.get("expirationMap"); 
+        // Obtém o valor associado à chave "expirationMap".
 
-        // Gera UUID cortaado em 8
+        // Gera um código curto aleatório usando UUID (Universal Unique Identifier).
+        // O código é composto pelos 8 primeiros caracteres do UUID gerado.
         String shortUrlCode = UUID.randomUUID().toString().substring(0, 8);
 
+        // Cria um mapa para armazenar a resposta que será retornada.
         Map<String, String> response = new HashMap<>();
-        response.put("code", shortUrlCode);
-        
+        response.put("code", shortUrlCode); 
+        // Adiciona o código curto gerado à resposta com a chave "code".
 
-        return response;
+        return response; 
+        // Retorna o mapa de resposta contendo o código curto gerado.
     }
 }
